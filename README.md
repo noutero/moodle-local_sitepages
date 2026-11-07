@@ -27,7 +27,7 @@ CI: `.github/workflows/moodle-ci.yml` (moodle-plugin-ci).
 
 ## Support / source
 
-Private GitHub for paid distribution:
+Private GitHub (Marketplace form):
 
-- Recommended repo name: `moodle-local_sitepages`
-- Publish helper: `../scripts/publish-github.sh` from the monorepo
+- Source: https://github.com/noutero/moodle-local_sitepages
+- Issues: https://github.com/noutero/moodle-local_sitepages/issues
