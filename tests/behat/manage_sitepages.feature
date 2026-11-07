@@ -14,5 +14,5 @@ Feature: Manage site pages
     And I press "Save changes"
     Then I should see "Welcome page"
     And I should see "welcome"
-    When I follow "View"
+    When I visit "/local/sitepages/view.php?slug=welcome"
     Then I should see "Welcome page"

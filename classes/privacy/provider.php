@@ -24,10 +24,15 @@
 
 namespace local_sitepages\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Privacy null provider for local_sitepages.
+ */
 class provider implements \core_privacy\local\metadata\null_provider {
-
+    /**
+     * Get the language string identifier for the reason.
+     *
+     * @return string
+     */
     public static function get_reason(): string {
         return 'privacy:metadata';
     }

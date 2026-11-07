@@ -24,13 +24,18 @@
 
 define('AJAX_SCRIPT', true);
 
-require_once(__DIR__ . '/config_bootstrap.php');
+// phpcs:disable moodle.Files.MoodleInternal.MoodleInternalGlobalState
+require_once(__DIR__ . '/config_bootstrap.php'); // Loads Moodle config.php (symlink-safe).
+// phpcs:enable
 require_once($CFG->dirroot . '/local/sitepages/locallib.php');
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 
 /**
+ * Emit a JSON response and exit.
+ *
+ * @param array $payload
  * @return never
  */
 function local_sitepages_api_json(array $payload): void {
@@ -38,6 +43,11 @@ function local_sitepages_api_json(array $payload): void {
     exit;
 }
 
+/**
+ * Decode the JSON request body.
+ *
+ * @return array
+ */
 function local_sitepages_api_body(): array {
     $raw = file_get_contents('php://input');
     if ($raw === false || $raw === '') {
@@ -119,7 +129,7 @@ try {
         // Same as save for site pages.
         $pathinfo = preg_replace('#/publish$#', '', $pathinfo);
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        // Fall through by re-dispatching simply:
+        // Fall through by re-dispatching simply.
         if (preg_match('#^/documents/(\d+)$#', $pathinfo, $m)) {
             $pageid = (int) $m[1];
             $page = local_sitepages_get_page($pageid);

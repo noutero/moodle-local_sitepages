@@ -22,7 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/config_bootstrap.php');
+// phpcs:disable moodle.Files.MoodleInternal.MoodleInternalGlobalState
+require_once(__DIR__ . '/config_bootstrap.php'); // Loads Moodle config.php (symlink-safe).
+// phpcs:enable
 require_once($CFG->dirroot . '/local/sitepages/locallib.php');
 
 $id = required_param('id', PARAM_INT);

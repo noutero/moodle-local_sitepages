@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Remember / recall the site page currently being viewed (for navbar callbacks).
  *
@@ -79,7 +77,21 @@ function local_sitepages_render_navbar_output(\renderer_base $renderer): string 
     return '';
 }
 
+/**
+ * Serve embedded editor or PageTiler image files.
+ *
+ * @param stdClass $course
+ * @param stdClass|null $cm
+ * @param context $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @param array $options
+ * @return bool
+ */
 function local_sitepages_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []): bool {
+    global $CFG;
+
     if ($context->contextlevel != CONTEXT_SYSTEM) {
         return false;
     }

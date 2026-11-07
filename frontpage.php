@@ -44,24 +44,19 @@ $PAGE->set_context($context);
 if (!local_sitepages_can_view($page, $context)) {
     require_login();
     local_sitepages_require_view($page);
-} else if (isloggedin() && !isguestuser()) {
-    // Already allowed.
-} else if (empty($page->allowguest)) {
-    require_login();
-    local_sitepages_require_view($page);
 }
 
 $urlparams = [];
 $redirect = optional_param('redirect', 1, PARAM_BOOL);
-if (!empty($CFG->defaulthomepage) &&
-        ($CFG->defaulthomepage == HOMEPAGE_MY || $CFG->defaulthomepage == HOMEPAGE_MYCOURSES) &&
-        $redirect === 0
+if (
+    !empty($CFG->defaulthomepage) &&
+    ($CFG->defaulthomepage == HOMEPAGE_MY || $CFG->defaulthomepage == HOMEPAGE_MYCOURSES) &&
+    $redirect === 0
 ) {
     $urlparams['redirect'] = 0;
 }
 $PAGE->set_url('/', $urlparams);
-// Use standard (not frontpage): themes like Moove/Trema inject slider, marketing
-// boxes, and “site numbers” only in the frontpage layout for guests.
+// Use standard (not frontpage): themes like Moove/Trema inject slider, marketing boxes, and site numbers only in the frontpage layout for guests.
 $PAGE->set_pagelayout('standard');
 $PAGE->set_pagetype('site-index');
 $PAGE->set_title(format_string($page->name));

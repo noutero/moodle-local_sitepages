@@ -32,7 +32,6 @@ require_once(__DIR__ . '/../locallib.php');
  * Navigation and other hooks.
  */
 class hook_callbacks {
-
     /**
      * Replace Moodle site homepage (/) with the designated site page when enabled.
      *
@@ -47,11 +46,11 @@ class hook_callbacks {
 
         // Included files declare their own globals; exit lives inside each override.
         if (local_sitepages_should_serve_homepage()) {
-            require $CFG->dirroot . '/local/sitepages/frontpage.php';
+            require($CFG->dirroot . '/local/sitepages/frontpage.php');
             return;
         }
         if (local_sitepages_should_serve_mycourses()) {
-            require $CFG->dirroot . '/local/sitepages/mycourses.php';
+            require($CFG->dirroot . '/local/sitepages/mycourses.php');
         }
     }
 

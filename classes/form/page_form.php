@@ -30,8 +30,13 @@ global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/local/sitepages/locallib.php');
 
+/**
+ * Moodle form to create or edit a site page.
+ */
 class page_form extends \moodleform {
-
+    /**
+     * Form definition.
+     */
     public function definition() {
         $mform = $this->_form;
         $context = $this->_customdata['context'];
@@ -101,6 +106,13 @@ class page_form extends \moodleform {
         $this->add_action_buttons(true, get_string('savechanges'));
     }
 
+    /**
+     * Validate slug uniqueness.
+     *
+     * @param array $data
+     * @param array $files
+     * @return array
+     */
     public function validation($data, $files) {
         global $DB;
         $errors = parent::validation($data, $files);

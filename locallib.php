@@ -31,13 +31,19 @@ require_once($CFG->dirroot . '/local/sitepages/lib.php');
 
 /**
  * Normalize page width setting.
+ *
+ * @param mixed $value
+ * @return string
  */
 function local_sitepages_normalize_pagewidth($value): string {
     return ((string) $value) === 'full' ? 'full' : 'limited';
 }
 
 /**
- * Normalize slug: empty → null; otherwise lowercase slug-safe string.
+ * Normalize slug: empty to null; otherwise lowercase slug-safe string.
+ *
+ * @param string|null $slug
+ * @return string|null
  */
 function local_sitepages_normalize_slug(?string $slug): ?string {
     $slug = trim((string) $slug);
@@ -53,6 +59,8 @@ function local_sitepages_normalize_slug(?string $slug): ?string {
 /**
  * Load a page by id or slug.
  *
+ * @param int $id
+ * @param string $slug
  * @return stdClass|false
  */
 function local_sitepages_get_page(int $id = 0, string $slug = '') {
@@ -68,6 +76,9 @@ function local_sitepages_get_page(int $id = 0, string $slug = '') {
 
 /**
  * Public URL for a site page (pretty /slug when set, otherwise view.php?id=).
+ *
+ * @param stdClass $page
+ * @return moodle_url
  */
 function local_sitepages_page_url(stdClass $page): moodle_url {
     if (!empty($page->slug)) {
@@ -78,6 +89,10 @@ function local_sitepages_page_url(stdClass $page): moodle_url {
 
 /**
  * Can the current user view this page?
+ *
+ * @param stdClass $page
+ * @param context|null $context
+ * @return bool
  */
 function local_sitepages_can_view(stdClass $page, ?context $context = null): bool {
     $context = $context ?? context_system::instance();
@@ -97,6 +112,8 @@ function local_sitepages_can_view(stdClass $page, ?context $context = null): boo
 
 /**
  * Require view access or throw.
+ *
+ * @param stdClass $page
  */
 function local_sitepages_require_view(stdClass $page): void {
     $context = context_system::instance();
@@ -114,6 +131,9 @@ function local_sitepages_require_view(stdClass $page): void {
 
 /**
  * Render page body HTML.
+ *
+ * @param stdClass $page
+ * @return string
  */
 function local_sitepages_render_content(stdClass $page): string {
     global $CFG;
@@ -158,6 +178,9 @@ function local_sitepages_render_content(stdClass $page): string {
 
 /**
  * Editing controls shown on the page while Moodle editing is on.
+ *
+ * @param stdClass $page
+ * @return string
  */
 function local_sitepages_render_edit_controls(stdClass $page): string {
     global $OUTPUT, $PAGE;
@@ -246,6 +269,9 @@ function local_sitepages_homepage_page_ids(): array {
 
 /**
  * Whether this site page is designated as a frontpage document.
+ *
+ * @param stdClass $page
+ * @return bool
  */
 function local_sitepages_is_homepage_page(stdClass $page): bool {
     return in_array((int) $page->id, local_sitepages_homepage_page_ids(), true);
@@ -280,6 +306,8 @@ function local_sitepages_homepage_page_options_loggedin(): array {
 /**
  * Load a homepage page by id; optionally keep guests allowed (public frontpage).
  *
+ * @param int $id
+ * @param bool $forguest
  * @return stdClass|false
  */
 function local_sitepages_prepare_homepage_page(int $id, bool $forguest) {
@@ -388,6 +416,9 @@ function local_sitepages_mycourses_page_id(): int {
 
 /**
  * Whether this site page is the designated My courses document.
+ *
+ * @param stdClass $page
+ * @return bool
  */
 function local_sitepages_is_mycourses_page(stdClass $page): bool {
     $id = local_sitepages_mycourses_page_id();
@@ -396,6 +427,9 @@ function local_sitepages_is_mycourses_page(stdClass $page): bool {
 
 /**
  * Whether this page is locked because it backs homepage and/or My courses.
+ *
+ * @param stdClass $page
+ * @return bool
  */
 function local_sitepages_is_locked_system_page(stdClass $page): bool {
     return (local_sitepages_homepage_enabled() && local_sitepages_is_homepage_page($page))
@@ -461,6 +495,7 @@ function local_sitepages_should_serve_mycourses(): bool {
 /**
  * Editor options for the page content field (Moodle HTML editor / TinyMCE).
  *
+ * @param context $context
  * @return array<string,mixed>
  */
 function local_sitepages_editor_options(context $context): array {

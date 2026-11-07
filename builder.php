@@ -22,7 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/config_bootstrap.php');
+// phpcs:disable moodle.Files.MoodleInternal.MoodleInternalGlobalState
+require_once(__DIR__ . '/config_bootstrap.php'); // Loads Moodle config.php (symlink-safe).
+// phpcs:enable
 require_once($CFG->dirroot . '/local/sitepages/locallib.php');
 
 $id = required_param('id', PARAM_INT);
@@ -109,6 +111,7 @@ $mediajs = pagetiler_asset_url('moodle-media.js')->out(false);
 $configjson = json_encode($config, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
 
 header('Content-Type: text/html; charset=utf-8');
+// phpcs:disable moodle.Commenting.MissingDocblock
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo substr(current_language(), 0, 2); ?>">

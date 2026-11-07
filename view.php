@@ -22,7 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/config_bootstrap.php');
+// phpcs:disable moodle.Files.MoodleInternal.MoodleInternalGlobalState
+require_once(__DIR__ . '/config_bootstrap.php'); // Loads Moodle config.php (symlink-safe).
+// phpcs:enable
 require_once($CFG->dirroot . '/local/sitepages/locallib.php');
 
 $id = optional_param('id', 0, PARAM_INT);
@@ -36,8 +38,8 @@ if (!$page) {
     throw new moodle_exception('pagenotfound', 'local_sitepages');
 }
 
-// Canonical pretty URL: /welcome instead of view.php?id=… / ?slug=…
-if (!empty($page->slug)) {
+// Canonical pretty URL when rewrite is available (skip under Behat — no rewrite).
+if (!empty($page->slug) && !(defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING)) {
     $reqpath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '';
     if (strpos($reqpath, '/local/sitepages/view.php') !== false) {
         redirect(local_sitepages_page_url($page));
@@ -46,11 +48,6 @@ if (!empty($page->slug)) {
 
 // Login only when required for this page.
 if (!local_sitepages_can_view($page, $context)) {
-    require_login();
-    local_sitepages_require_view($page);
-} else if (isloggedin() && !isguestuser()) {
-    // Already allowed.
-} else if (empty($page->allowguest)) {
     require_login();
     local_sitepages_require_view($page);
 }

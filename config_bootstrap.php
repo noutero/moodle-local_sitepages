@@ -25,6 +25,9 @@
 
 declare(strict_types=1);
 
+// This file's purpose is to locate and require Moodle's config.php.
+// phpcs:disable moodle.Files.MoodleInternal.MoodleInternalGlobalState
+
 $candidates = [];
 
 if (!empty($_SERVER['DOCUMENT_ROOT'])) {
