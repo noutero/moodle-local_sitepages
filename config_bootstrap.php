@@ -25,41 +25,41 @@
 
 declare(strict_types=1);
 
-$pagetilerConfigCandidates = [];
+$candidates = [];
 
 if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-	$pagetilerConfigCandidates[] = rtrim((string) $_SERVER['DOCUMENT_ROOT'], "/\\") . DIRECTORY_SEPARATOR . 'config.php';
+    $candidates[] = rtrim((string) $_SERVER['DOCUMENT_ROOT'], "/\\") . DIRECTORY_SEPARATOR . 'config.php';
 }
 
-foreach ([$_SERVER['SCRIPT_FILENAME'] ?? '', __FILE__] as $pagetilerStart) {
-	if ($pagetilerStart === '') {
-		continue;
-	}
-	$pagetilerDir = dirname(str_replace('\\', '/', (string) $pagetilerStart));
-	for ($pagetilerI = 0; $pagetilerI < 8; $pagetilerI++) {
-		$pagetilerConfigCandidates[] = $pagetilerDir . '/config.php';
-		$pagetilerParent = dirname($pagetilerDir);
-		if ($pagetilerParent === $pagetilerDir) {
-			break;
-		}
-		$pagetilerDir = $pagetilerParent;
-	}
+foreach ([$_SERVER['SCRIPT_FILENAME'] ?? '', __FILE__] as $start) {
+    if ($start === '') {
+        continue;
+    }
+    $dir = dirname(str_replace('\\', '/', (string) $start));
+    for ($i = 0; $i < 8; $i++) {
+        $candidates[] = $dir . '/config.php';
+        $parent = dirname($dir);
+        if ($parent === $dir) {
+            break;
+        }
+        $dir = $parent;
+    }
 }
 
-$pagetilerSeen = [];
-foreach ($pagetilerConfigCandidates as $pagetilerConfig) {
-	$pagetilerConfig = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $pagetilerConfig);
-	if (isset($pagetilerSeen[$pagetilerConfig])) {
-		continue;
-	}
-	$pagetilerSeen[$pagetilerConfig] = true;
-	$pagetilerRoot = dirname($pagetilerConfig);
-	if (is_readable($pagetilerConfig) && is_readable($pagetilerRoot . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'moodlelib.php')) {
-		require $pagetilerConfig;
-		return;
-	}
+$seen = [];
+foreach ($candidates as $configpath) {
+    $configpath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $configpath);
+    if (isset($seen[$configpath])) {
+        continue;
+    }
+    $seen[$configpath] = true;
+    $root = dirname($configpath);
+    if (is_readable($configpath) && is_readable($root . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'moodlelib.php')) {
+        require($configpath);
+        return;
+    }
 }
 
 http_response_code(500);
-echo 'PageTiler could not locate Moodle config.php. Is the plugin installed under a Moodle dirroot?';
+echo 'Site pages could not locate Moodle config.php. Is the plugin installed under a Moodle dirroot?';
 exit(1);

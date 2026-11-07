@@ -7,7 +7,7 @@ Feature: Manage site pages
   @javascript
   Scenario: Admin creates a site page with the Moodle editor
     Given I log in as "admin"
-    And I am on "/local/sitepages/edit.php"
+    And I visit "/local/sitepages/edit.php"
     And I set the following fields to these values:
       | Page name | Welcome page |
       | URL slug  | welcome      |
