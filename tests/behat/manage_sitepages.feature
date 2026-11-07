@@ -7,7 +7,7 @@ Feature: Manage site pages
   @javascript
   Scenario: Admin creates a site page with the Moodle editor
     Given I log in as "admin"
-    And I navigate to "Pages > Manage site pages" in site administration
+    And I am on "/local/sitepages/index.php"
     And I press "Add page"
     And I set the following fields to these values:
       | Page name | Welcome page |
