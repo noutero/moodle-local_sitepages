@@ -1,0 +1,19 @@
+/**
+ * Site pages layout overrides (Boost drawers).
+ *
+ * .pagelayout-standard always caps .main-inner — full width needs an explicit override.
+ */
+
+@media (min-width: 768px) {
+    body.pagelayout-standard.local-sitepages-fullwidth #page.drawers .main-inner,
+    body.pagelayout-standard.local-sitepages-fullwidth #page.drawers .footer-popover,
+    body.pagelayout-frontpage.local-sitepages-fullwidth #page.drawers .main-inner,
+    body.pagelayout-frontpage.local-sitepages-fullwidth #page.drawers .footer-popover {
+        max-width: none;
+    }
+}
+
+body.local-sitepages-hideheader #page-header,
+body.local-sitepages-hideheader .page-header-headings {
+    display: none;
+}
