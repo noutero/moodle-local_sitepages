@@ -48,7 +48,6 @@ Admin guide: https://pagetiler.ivent.pl/local/sitepages/view.php?slug=docs (demo
 
 ## Support / source
 
-Private GitHub (Marketplace form):
-
-- Source: https://github.com/noutero/moodle-local_sitepages
-- Issues: https://github.com/noutero/moodle-local_sitepages/issues
+- **Public issue tracker** (Marketplace / anonymous): https://github.com/noutero/pagetiler-moodle-tracker/issues  
+  Use labels or mention `mod_pagetiler` / `local_sitepages` in the issue.
+- Private source (this repo): https://github.com/noutero/moodle-local_sitepages
