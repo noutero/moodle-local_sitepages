@@ -67,6 +67,8 @@ if ($page) {
         'content',
         $page->id
     );
+    $data->requiredroles = local_sitepages_parse_id_list($page->requiredroles ?? '');
+    $data->requiredcohorts = local_sitepages_parse_id_list($page->requiredcohorts ?? '');
     $mform->set_data($data);
 } else {
     $empty = (object) [
@@ -75,6 +77,8 @@ if ($page) {
         'slug' => '',
         'visible' => 1,
         'allowguest' => 0,
+        'requiredroles' => [],
+        'requiredcohorts' => [],
         'pagewidth' => 'limited',
         'hideheader' => 0,
         'editmode' => 'editor',
@@ -104,7 +108,14 @@ if ($data = $mform->get_data()) {
     $record->name = trim($data->name);
     $record->slug = local_sitepages_normalize_slug($data->slug ?? '');
     $record->visible = empty($data->visible) ? 0 : 1;
-    $record->allowguest = empty($data->allowguest) ? 0 : 1;
+    $record->requiredroles = local_sitepages_encode_id_list($data->requiredroles ?? []);
+    $record->requiredcohorts = local_sitepages_encode_id_list($data->requiredcohorts ?? []);
+    // Role/cohort limits require a real account — guests never match.
+    $haslimits = local_sitepages_page_has_audience_limits((object) [
+        'requiredroles' => $record->requiredroles,
+        'requiredcohorts' => $record->requiredcohorts,
+    ]);
+    $record->allowguest = (!$haslimits && !empty($data->allowguest)) ? 1 : 0;
     $record->pagewidth = local_sitepages_normalize_pagewidth($data->pagewidth ?? 'limited');
     $record->hideheader = empty($data->hideheader) ? 0 : 1;
     $record->editmode = ($haspagetiler && ($data->editmode ?? '') === 'pagetiler') ? 'pagetiler' : 'editor';

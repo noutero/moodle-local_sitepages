@@ -63,14 +63,15 @@ class hook_callbacks {
         global $DB;
 
         $context = \context_system::instance();
-        $canmanage = has_capability('local/sitepages:manage', $context);
-        $canview = isloggedin() && !isguestuser() && has_capability('local/sitepages:view', $context);
-        $hasguestpages = $DB->record_exists_select(
-            'local_sitepages',
-            'visible = 1 AND allowguest = 1'
-        );
+        $allpages = $DB->get_records('local_sitepages', null, 'name ASC');
+        $pages = [];
+        foreach ($allpages as $page) {
+            if (local_sitepages_can_view($page, $context)) {
+                $pages[$page->id] = $page;
+            }
+        }
 
-        if (!$canmanage && !$canview && !$hasguestpages) {
+        if (!$pages && !has_capability('local/sitepages:manage', $context)) {
             return;
         }
 
@@ -84,19 +85,7 @@ class hook_callbacks {
             new \pix_icon('icon', get_string('pages', 'local_sitepages'), 'local_sitepages')
         );
 
-        // Child links for visible pages (guests see allowguest pages only).
-        if ($canmanage) {
-            $pages = $DB->get_records('local_sitepages', null, 'name ASC');
-        } else if ($canview) {
-            $pages = $DB->get_records('local_sitepages', ['visible' => 1], 'name ASC');
-        } else {
-            $pages = $DB->get_records_select(
-                'local_sitepages',
-                'visible = 1 AND allowguest = 1',
-                null,
-                'name ASC'
-            );
-        }
+        // Child links for pages the current viewer may open.
         foreach ($pages as $page) {
             // Skip homepage / My courses targets and legacy welcome slug — already in primary/custom menu.
             if (local_sitepages_is_homepage_page($page) || local_sitepages_is_mycourses_page($page)) {

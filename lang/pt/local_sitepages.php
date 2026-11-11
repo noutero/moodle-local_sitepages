@@ -5,6 +5,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Portuguese language strings for local_sitepages.
@@ -16,10 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['accessheader'] = 'Restrições de acesso';
 $string['actions'] = 'Ações';
 $string['addpage'] = 'Adicionar página';
 $string['allowguest'] = 'Permitir convidados';
-$string['allowguest_help'] = 'Se ativado, os convidados sem sessão iniciada podem ver esta página sem a capacidade de visualizar.';
+$string['allowguest_help'] = 'Se ativado, os convidados sem sessão iniciada podem ver esta página sem a capacidade de visualizar. Ignorado quando há restrições de papéis ou coortes (os convidados não as cumprem).';
 $string['content'] = 'Conteúdo da página';
 $string['deleteconfirm'] = 'Eliminar a página «{$a}»?';
 $string['deletepage'] = 'Eliminar página';
@@ -37,27 +46,27 @@ $string['hideheader'] = 'Ocultar cabeçalho da página';
 $string['hideheader_help'] = 'Oculta o título da página acima do conteúdo. A barra de navegação do site não é removida por esta definição.';
 $string['homepageactions'] = 'Ações da página inicial';
 $string['homepageactive'] = 'A página inicial do site está a usar uma página do site.';
-$string['homepagebadge'] = 'Página inicial';
+$string['homepagebadge'] = 'Início';
 $string['homepagebadge_guest'] = 'Início (convidados)';
 $string['homepagebadge_loggedin'] = 'Início (autenticados)';
-$string['homepagedeleteblocked'] = 'Alterar as definições das páginas do sistema para eliminar';
-$string['homepagedeleteerror'] = 'Esta página é usada como página inicial do site ou página Os meus cursos. Altere as definições de Páginas do site antes de a eliminar.';
-$string['homepagemissing'] = 'A substituição da página inicial está ativa, mas não está selecionada uma página de capa válida para convidados. Escolha uma página acima ou crie uma em Gerir páginas do site.';
-$string['homepagepage'] = 'Capa para convidados';
+$string['homepagedeleteblocked'] = 'Altere as definições de páginas do sistema para eliminar';
+$string['homepagedeleteerror'] = 'Esta página é usada como página inicial do site ou Os meus cursos. Altere as definições de Páginas do site antes de a eliminar.';
+$string['homepagemissing'] = 'A substituição da página inicial está ativa, mas não há uma página válida para convidados. Escolha uma acima ou crie em Gerir páginas do site.';
+$string['homepagepage'] = 'Página inicial para convidados';
 $string['homepagepage_choose'] = 'Escolher uma página…';
-$string['homepagepage_help'] = 'Página do site mostrada a visitantes sem sessão (e convidados) em /. Crie páginas em Páginas → Gerir páginas do site se a lista estiver vazia.';
-$string['homepagepage_loggedin'] = 'Capa quando autenticado';
-$string['homepagepage_loggedin_help'] = 'Opcional. Página do site mostrada a utilizadores autenticados no início do site. Escolha «Igual aos convidados» para reutilizar a página de convidados. Utilizadores cuja página inicial predefinida é Painel / Os meus cursos continuam a ir para aí primeiro.';
+$string['homepagepage_help'] = 'Página do site mostrada a visitantes desligados (e convidados) em /. Crie páginas em Páginas → Gerir páginas do site se a lista estiver vazia.';
+$string['homepagepage_loggedin'] = 'Página inicial quando autenticado';
+$string['homepagepage_loggedin_help'] = 'Opcional. Página do site para utilizadores autenticados no início do site. Escolha «Igual aos convidados» para reutilizar a dos convidados. Utilizadores com Painel / Os meus cursos como início ainda lá chegam primeiro.';
 $string['homepagepage_sameasguest'] = 'Igual aos convidados';
 $string['managepages'] = 'Gerir páginas do site';
 $string['mycoursesactions'] = 'Ações Os meus cursos';
 $string['mycoursesactive'] = 'Os meus cursos está a usar uma página do site.';
 $string['mycoursesbadge'] = 'Os meus cursos';
-$string['mycoursesmissing'] = 'A substituição de Os meus cursos está ativa, mas não está selecionada uma página do site válida. Escolha uma página acima ou crie uma em Gerir páginas do site.';
+$string['mycoursesmissing'] = 'A substituição de Os meus cursos está ativa, mas não há uma página do site válida. Escolha uma acima ou crie em Gerir páginas do site.';
 $string['mycoursespage'] = 'Os meus cursos';
-$string['mycoursespage_desc'] = 'Substitua a página Os meus cursos do Moodle (/my/courses.php) por uma página do site existente. Apenas utilizadores autenticados. Crie primeiro a página em Gerir páginas do site (pode incluir um widget Cursos no PageTiler).';
+$string['mycoursespage_desc'] = 'Substitua a página Os meus cursos do Moodle (/my/courses.php) por uma página do site existente. Apenas utilizadores autenticados. Crie primeiro a página em Gerir páginas do site (pode incluir um widget de Cursos no PageTiler).';
 $string['mycoursespage_select'] = 'Página Os meus cursos';
-$string['mycoursespage_select_help'] = 'Qual página do site mostrar em /my/courses.php.';
+$string['mycoursespage_select_help'] = 'Que página do site mostrar em /my/courses.php.';
 $string['nopages'] = 'Ainda não há páginas do site.';
 $string['pagedeleted'] = 'Página eliminada.';
 $string['pagename'] = 'Nome da página';
@@ -65,30 +74,39 @@ $string['pagename_help'] = 'Título mostrado na página e na lista de administra
 $string['pagenotfound'] = 'Página não encontrada.';
 $string['pagenotvisible'] = 'Esta página não está disponível.';
 $string['pages'] = 'Páginas';
-$string['pagetilerunavailable'] = 'Esta página foi criada com o PageTiler, mas o plugin de atividade PageTiler não está disponível.';
+$string['pagetilerunavailable'] = 'Esta página foi criada com PageTiler, mas o plugin de atividade PageTiler não está disponível.';
 $string['pageupdated'] = 'Página guardada.';
 $string['pagewidth'] = 'Largura da página';
 $string['pagewidth_full'] = 'Largura total';
-$string['pagewidth_help'] = 'Limitada corresponde a páginas Moodle típicas (largura limitada do Boost). Total usa toda a região de conteúdo principal — melhor para layouts largos e de várias colunas.';
+$string['pagewidth_help'] = 'Limitada corresponde às páginas típicas do Moodle (largura limitada no Boost). Total usa toda a região de conteúdo principal — melhor para layouts largos e multi-coluna.';
 $string['pagewidth_limited'] = 'Limitada (predefinição do tema)';
 $string['pluginname'] = 'Páginas do site';
+$string['prettyurlprefix'] = 'Prefixo de URL amigável';
+$string['prettyurlprefix_help'] = 'Segmento de caminho opcional antes do slug com URLs amigáveis ativas. Vazio = /welcome. sites = /sites/welcome. Deve coincidir com a regra de reescrita do servidor.';
 $string['privacy:metadata'] = 'O plugin Páginas do site guarda o conteúdo das páginas criado por administradores. Não guarda dados pessoais de utilizadores além do campo padrão usermodified.';
+$string['requiredcohorts'] = 'Restringir a coortes';
+$string['requiredcohorts_help'] = 'Se forem selecionadas coortes, o visitante deve pertencer a pelo menos uma. Vazio = sem limite de coortes. Combinado com papéis com AND. Os gestores têm sempre acesso.';
+$string['requiredcohorts_none'] = 'Sem restrição de coortes';
+$string['requiredroles'] = 'Restringir a papéis';
+$string['requiredroles_help'] = 'Se forem selecionados papéis, o visitante deve ter pelo menos um (em qualquer contexto). Vazio = sem limite de papéis. Combinado com coortes com AND. Os gestores têm sempre acesso. Negação em todo o site também via local/sitepages:view.';
+$string['requiredroles_none'] = 'Sem restrição de papéis';
 $string['sitehomepage'] = 'Página inicial do site';
-$string['sitehomepage_desc'] = 'Substitua a página inicial predefinida do Moodle por páginas do site. Pode usar páginas diferentes para visitantes e utilizadores autenticados. Crie primeiro as páginas em Gerir páginas do site. Os redirecionamentos Painel / Os meus cursos não mudam — utilizadores autenticados só veem a capa autenticada quando Site é a sua página inicial, ou via Início do site (/?redirect=0).';
+$string['sitehomepage_desc'] = 'Substitua a página inicial predefinida do Moodle por Páginas do site. Pode usar páginas diferentes para visitantes e utilizadores autenticados. Crie primeiro as páginas em Gerir páginas do site. Os redirecionamentos Painel / Os meus cursos mantêm-se — utilizadores autenticados só veem a página autenticada se Site for o seu início, ou via Início do site (/?redirect=0).';
 $string['sitepages:manage'] = 'Gerir páginas do site';
 $string['sitepages:view'] = 'Ver páginas do site';
-$string['slug'] = 'Slug do URL';
-$string['slug_help'] = 'Nome curto opcional de URL (letras, números, hífenes). As páginas estão em /local/sitepages/view.php?slug=nome. Com «URLs amigáveis» ativadas (e reescrita do servidor), também em /nome.';
-$string['useprettyurls'] = 'URLs amigáveis de página (/slug)';
-$string['useprettyurls_help'] = 'Quando ativado, as páginas do site com slug usam /slug em vez de /local/sitepages/view.php?slug=…. Requer uma regra de reescrita que mapeie /slug para view.php. Deixe desativado se a reescrita não estiver configurada.';
+$string['slug'] = 'Slug de URL';
+$string['slug_help'] = 'Nome curto de URL opcional (letras, números, hífenes). As páginas estão em /local/sitepages/view.php?slug=nome. Com URLs amigáveis (e reescrita) também em /nome ou /prefixo/nome.';
 $string['useonhomepage'] = 'Usar uma página do site na página inicial';
-$string['useonhomepage_help'] = 'Quando ativado, o início do site Moodle (/) mostra a(s) página(s) do site selecionada(s) em vez da capa clássica. A página de convidados fica automaticamente visível a convidados. Desative para restaurar a página inicial clássica do Moodle.';
+$string['useonhomepage_help'] = 'Quando ativado, o início do Moodle (/) mostra a(s) página(s) do site selecionada(s) em vez da página clássica. A página de convidados fica visível a convidados automaticamente. Desative para restaurar o início clássico.';
 $string['useonmycourses'] = 'Usar uma página do site para Os meus cursos';
-$string['useonmycourses_help'] = 'Quando ativado, Os meus cursos mostra a página do site selecionada em vez da vista geral de cursos predefinida. Desative para restaurar a página clássica Os meus cursos.';
-$string['viewclassichomepage'] = 'Pré-visualizar página inicial clássica';
+$string['useonmycourses_help'] = 'Quando ativado, Os meus cursos mostra a página do site selecionada em vez da visão geral de cursos. Desative para restaurar Os meus cursos clássico.';
+$string['useprettyurls'] = 'URLs amigáveis de página';
+$string['useprettyurls_help'] = 'Quando ativado, as páginas com slug usam um caminho curto (/slug ou /prefixo/slug) em vez de /local/sitepages/view.php?slug=…. Requer uma reescrita correspondente (exemplos Apache/Nginx no README e guia). Deixe desativado até verificar a reescrita.';
+$string['viewclassichomepage'] = 'Pré-visualizar início clássico';
 $string['viewclassicmycourses'] = 'Pré-visualizar Os meus cursos clássico';
-$string['viewhomepage'] = 'Ver como início de convidado';
+$string['viewhomepage'] = 'Ver como início de convidados';
 $string['viewhomepage_loggedin'] = 'Ver como início autenticado';
 $string['viewmycourses'] = 'Ver Os meus cursos';
 $string['viewpage'] = 'Ver';
 $string['visible'] = 'Visível';
+$string['visible_help'] = 'As páginas ocultas só estão disponíveis para utilizadores que podem gerir páginas do site.';

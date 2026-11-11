@@ -35,28 +35,18 @@ $PAGE->set_title(get_string('pages', 'local_sitepages'));
 $PAGE->set_heading(get_string('pages', 'local_sitepages'));
 
 $canmanage = has_capability('local/sitepages:manage', $context);
-$canview = isloggedin() && !isguestuser() && has_capability('local/sitepages:view', $context);
 
-if (!$canmanage && !$canview) {
-    // Guests may browse the list if any guest pages exist.
-    $hasguestpages = $DB->record_exists_select('local_sitepages', 'visible = 1 AND allowguest = 1');
-    if (!$hasguestpages) {
-        require_login();
-        require_capability('local/sitepages:view', $context);
+$allpages = $DB->get_records('local_sitepages', null, 'name ASC');
+$pages = [];
+foreach ($allpages as $page) {
+    if (local_sitepages_can_view($page, $context)) {
+        $pages[$page->id] = $page;
     }
 }
 
-if ($canmanage) {
-    $pages = $DB->get_records('local_sitepages', null, 'name ASC');
-} else if ($canview) {
-    $pages = $DB->get_records('local_sitepages', ['visible' => 1], 'name ASC');
-} else {
-    $pages = $DB->get_records_select(
-        'local_sitepages',
-        'visible = 1 AND allowguest = 1',
-        null,
-        'name ASC'
-    );
+if (!$pages && !$canmanage) {
+    require_login();
+    require_capability('local/sitepages:view', $context);
 }
 
 echo $OUTPUT->header();

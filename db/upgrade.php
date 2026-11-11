@@ -49,5 +49,21 @@ function xmldb_local_sitepages_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026110700, 'local', 'sitepages');
     }
 
+    if ($oldversion < 2026111100) {
+        $table = new xmldb_table('local_sitepages');
+
+        $field = new xmldb_field('requiredroles', XMLDB_TYPE_TEXT, null, null, null, null, null, 'allowguest');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('requiredcohorts', XMLDB_TYPE_TEXT, null, null, null, null, null, 'requiredroles');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_plugin_savepoint(true, 2026111100, 'local', 'sitepages');
+    }
+
     return true;
 }

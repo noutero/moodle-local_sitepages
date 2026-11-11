@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/sitepages/db" VERSION="2026110700" COMMENT="XMLDB file for local_sitepages"
+<XMLDB PATH="local/sitepages/db" VERSION="2026111100" COMMENT="XMLDB file for local_sitepages"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -15,6 +15,8 @@
         <FIELD NAME="contentjson" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="visible" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="allowguest" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="requiredroles" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Comma-separated role ids; empty = no role limit"/>
+        <FIELD NAME="requiredcohorts" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Comma-separated cohort ids; empty = no cohort limit"/>
         <FIELD NAME="pagewidth" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="limited" SEQUENCE="false" COMMENT="limited or full"/>
         <FIELD NAME="hideheader" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

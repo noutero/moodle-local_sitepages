@@ -5,6 +5,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * German language strings for local_sitepages.
@@ -16,10 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['accessheader'] = 'Zugriffsbeschränkungen';
 $string['actions'] = 'Aktionen';
 $string['addpage'] = 'Seite hinzufügen';
 $string['allowguest'] = 'Gäste zulassen';
-$string['allowguest_help'] = 'Wenn aktiviert, können abgemeldete Gäste diese Seite ohne die Anzeigeberechtigung sehen.';
+$string['allowguest_help'] = 'Wenn aktiviert, können abgemeldete Gäste diese Seite ohne die Anzeigeberechtigung sehen. Wird ignoriert, wenn Rollen- oder Kohortenbeschränkungen gesetzt sind (Gäste erfüllen diese nicht).';
 $string['content'] = 'Seiteninhalt';
 $string['deleteconfirm'] = 'Seite „{$a}“ löschen?';
 $string['deletepage'] = 'Seite löschen';
@@ -72,19 +81,27 @@ $string['pagewidth_full'] = 'Volle Breite';
 $string['pagewidth_help'] = 'Begrenzt entspricht typischen Moodle-Seiten (begrenzte Breite in Boost). Voll nutzt den gesamten Hauptinhaltsbereich — besser für breite Layouts und Mehrspalten-Designs.';
 $string['pagewidth_limited'] = 'Begrenzt (Theme-Standard)';
 $string['pluginname'] = 'Website-Seiten';
+$string['prettyurlprefix'] = 'Pretty-URL-Präfix';
+$string['prettyurlprefix_help'] = 'Optionaler Pfadabschnitt vor dem Slug, wenn Pretty page URLs aktiv sind. Leer lassen für /welcome. sites ergibt /sites/welcome. Muss zur Server-Rewrite-Regel passen.';
 $string['privacy:metadata'] = 'Das Plugin Website-Seiten speichert von Administratoren erstellte Seiteninhalte. Es speichert keine personenbezogenen Nutzerdaten außer dem Standardfeld usermodified.';
+$string['requiredcohorts'] = 'Auf Kohorten beschränken';
+$string['requiredcohorts_help'] = 'Wenn Kohorten ausgewählt sind, muss der Betrachter Mitglied mindestens einer sein. Leer = keine Kohortenbeschränkung. Mit Rollenbeschränkungen als AND kombiniert. Manager haben immer Zugriff.';
+$string['requiredcohorts_none'] = 'Keine Kohortenbeschränkung';
+$string['requiredroles'] = 'Auf Rollen beschränken';
+$string['requiredroles_help'] = 'Wenn Rollen ausgewählt sind, muss der Betrachter mindestens eine davon haben (beliebiger Kontext). Leer = keine Rollenbeschränkung. Mit Kohorten als AND kombiniert. Manager haben immer Zugriff. Siteweite Sperre auch über local/sitepages:view möglich.';
+$string['requiredroles_none'] = 'Keine Rollenbeschränkung';
 $string['sitehomepage'] = 'Website-Startseite';
 $string['sitehomepage_desc'] = 'Ersetzen Sie die Standard-Moodle-Website-Startseite durch Website-Seiten. Sie können unterschiedliche Seiten für Besucher und angemeldete Nutzer verwenden. Erstellen Sie Seiten zuerst unter Website-Seiten verwalten. Dashboard- / Meine-Kurse-Weiterleitungen bleiben unverändert — angemeldete Nutzer sehen die angemeldete Startseite nur, wenn Website ihre Startseite ist, oder über Website-Startseite (/?redirect=0).';
 $string['sitepages:manage'] = 'Website-Seiten verwalten';
 $string['sitepages:view'] = 'Website-Seiten anzeigen';
 $string['slug'] = 'URL-Slug';
-$string['slug_help'] = 'Optionaler kurzer URL-Name (Buchstaben, Zahlen, Bindestriche). Seiten sind unter /local/sitepages/view.php?slug=name erreichbar. Mit aktivierten „Pretty URLs“ (und Server-Rewrite) auch unter /name.';
-$string['useprettyurls'] = 'Hübsche Seiten-URLs (/slug)';
-$string['useprettyurls_help'] = 'Wenn aktiviert, verwenden Website-Seiten mit Slug /slug statt /local/sitepages/view.php?slug=…. Erfordert eine Rewrite-Regel, die /slug auf view.php abbildet. Ausgeschaltet lassen, sofern kein Rewrite konfiguriert ist.';
+$string['slug_help'] = 'Optionaler kurzer URL-Name (Buchstaben, Zahlen, Bindestriche). Seiten sind unter /local/sitepages/view.php?slug=name erreichbar. Mit aktivierten Pretty URLs (und Server-Rewrite) auch unter /name oder /prefix/name.';
 $string['useonhomepage'] = 'Website-Seite auf der Startseite verwenden';
 $string['useonhomepage_help'] = 'Wenn aktiviert, zeigt Moodles Website-Startseite (/) die ausgewählte(n) Website-Seite(n) statt der klassischen Startseite. Die Gastseite wird automatisch gastsichtbar gemacht. Deaktivieren, um die klassische Moodle-Startseite wiederherzustellen.';
 $string['useonmycourses'] = 'Website-Seite für Meine Kurse verwenden';
 $string['useonmycourses_help'] = 'Wenn aktiviert, zeigt Meine Kurse die ausgewählte Website-Seite statt der Standard-Kursübersicht. Deaktivieren, um die klassische Meine-Kurse-Seite wiederherzustellen.';
+$string['useprettyurls'] = 'Hübsche Seiten-URLs';
+$string['useprettyurls_help'] = 'Wenn aktiviert, verwenden Website-Seiten mit Slug einen kurzen Pfad (/slug oder /prefix/slug) statt /local/sitepages/view.php?slug=…. Erfordert eine passende Rewrite-Regel (Beispiele in README und Admin-Guide). Ausgeschaltet lassen, bis das Rewrite funktioniert.';
 $string['viewclassichomepage'] = 'Klassische Startseite anzeigen';
 $string['viewclassicmycourses'] = 'Klassische Meine Kurse anzeigen';
 $string['viewhomepage'] = 'Als Gast-Startseite anzeigen';
@@ -92,3 +109,4 @@ $string['viewhomepage_loggedin'] = 'Als angemeldete Startseite anzeigen';
 $string['viewmycourses'] = 'Meine Kurse anzeigen';
 $string['viewpage'] = 'Anzeigen';
 $string['visible'] = 'Sichtbar';
+$string['visible_help'] = 'Ausgeblendete Seiten sind nur für Nutzer mit der Berechtigung Website-Seiten zu verwalten verfügbar.';

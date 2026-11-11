@@ -53,9 +53,38 @@ class page_form extends \moodleform {
 
         $mform->addElement('advcheckbox', 'visible', get_string('visible', 'local_sitepages'));
         $mform->setDefault('visible', 1);
+        $mform->addHelpButton('visible', 'visible', 'local_sitepages');
 
         $mform->addElement('advcheckbox', 'allowguest', get_string('allowguest', 'local_sitepages'));
         $mform->addHelpButton('allowguest', 'allowguest', 'local_sitepages');
+
+        $mform->addElement('header', 'accessheader', get_string('accessheader', 'local_sitepages'));
+
+        $roleoptions = local_sitepages_role_options();
+        $mform->addElement(
+            'autocomplete',
+            'requiredroles',
+            get_string('requiredroles', 'local_sitepages'),
+            $roleoptions,
+            [
+                'multiple' => true,
+                'noselectionstring' => get_string('requiredroles_none', 'local_sitepages'),
+            ]
+        );
+        $mform->addHelpButton('requiredroles', 'requiredroles', 'local_sitepages');
+
+        $cohortoptions = local_sitepages_cohort_options();
+        $mform->addElement(
+            'autocomplete',
+            'requiredcohorts',
+            get_string('requiredcohorts', 'local_sitepages'),
+            $cohortoptions,
+            [
+                'multiple' => true,
+                'noselectionstring' => get_string('requiredcohorts_none', 'local_sitepages'),
+            ]
+        );
+        $mform->addHelpButton('requiredcohorts', 'requiredcohorts', 'local_sitepages');
 
         $mform->addElement(
             'select',

@@ -67,6 +67,14 @@ if ($hassiteconfig) {
         0
     ));
 
+    $homesettings->add(new admin_setting_configtext(
+        'local_sitepages/prettyurlprefix',
+        get_string('prettyurlprefix', 'local_sitepages'),
+        get_string('prettyurlprefix_help', 'local_sitepages'),
+        '',
+        PARAM_ALPHANUMEXT
+    ));
+
     $homesettings->add(new admin_setting_configcheckbox(
         'local_sitepages/useonhomepage',
         get_string('useonhomepage', 'local_sitepages'),

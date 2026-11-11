@@ -56,7 +56,8 @@ if (
     $urlparams['redirect'] = 0;
 }
 $PAGE->set_url('/', $urlparams);
-// Use standard (not frontpage): themes like Moove/Trema inject slider, marketing boxes, and site numbers only in the frontpage layout for guests.
+// Use standard (not frontpage): themes like Moove/Trema inject slider,
+// marketing boxes, and site numbers only in the frontpage layout for guests.
 $PAGE->set_pagelayout('standard');
 $PAGE->set_pagetype('site-index');
 $PAGE->set_title(format_string($page->name));

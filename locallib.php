@@ -78,14 +78,16 @@ function local_sitepages_get_page(int $id = 0, string $slug = '') {
  * Public URL for a site page.
  *
  * Uses /local/sitepages/view.php?slug=… when a slug is set (works without
- * web-server rewrite). Pretty /{slug} URLs are optional via useprettyurls.
+ * web-server rewrite). Pretty URLs are optional via useprettyurls (+ optional prefix).
  *
  * @param stdClass $page
  * @return moodle_url
  */
 function local_sitepages_page_url(stdClass $page): moodle_url {
     if (!empty($page->slug) && local_sitepages_pretty_urls_enabled()) {
-        return new moodle_url('/' . $page->slug);
+        $prefix = local_sitepages_pretty_url_prefix();
+        $path = $prefix === '' ? '/' . $page->slug : '/' . $prefix . '/' . $page->slug;
+        return new moodle_url($path);
     }
     if (!empty($page->slug)) {
         return new moodle_url('/local/sitepages/view.php', ['slug' => $page->slug]);
@@ -94,14 +96,159 @@ function local_sitepages_page_url(stdClass $page): moodle_url {
 }
 
 /**
- * Whether pretty /{slug} URLs are enabled (requires web-server rewrite).
+ * Whether pretty URLs are enabled (requires web-server rewrite).
  */
 function local_sitepages_pretty_urls_enabled(): bool {
     return (bool) get_config('local_sitepages', 'useprettyurls');
 }
 
 /**
+ * Optional pretty-URL path prefix (e.g. "sites" → /sites/slug). Empty = /slug.
+ */
+function local_sitepages_pretty_url_prefix(): string {
+    $prefix = trim((string) get_config('local_sitepages', 'prettyurlprefix'), "/ \t");
+    if ($prefix === '') {
+        return '';
+    }
+    $prefix = core_text::strtolower($prefix);
+    $prefix = preg_replace('/[^a-z0-9\-]+/', '-', $prefix) ?? '';
+    return trim($prefix, '-');
+}
+
+/**
+ * Parse a CSV / array of positive ints (role or cohort ids).
+ *
+ * @param mixed $value
+ * @return int[]
+ */
+function local_sitepages_parse_id_list($value): array {
+    if (is_array($value)) {
+        $parts = $value;
+    } else {
+        $parts = preg_split('/\s*,\s*/', trim((string) $value), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+    }
+    $ids = [];
+    foreach ($parts as $part) {
+        $id = (int) $part;
+        if ($id > 0) {
+            $ids[$id] = $id;
+        }
+    }
+    return array_values($ids);
+}
+
+/**
+ * Encode id list for DB storage.
+ *
+ * @param mixed $value
+ * @return string|null
+ */
+function local_sitepages_encode_id_list($value): ?string {
+    $ids = local_sitepages_parse_id_list($value);
+    return $ids ? implode(',', $ids) : null;
+}
+
+/**
+ * Whether this page has role and/or cohort audience limits.
+ *
+ * @param stdClass $page
+ * @return bool
+ */
+function local_sitepages_page_has_audience_limits(stdClass $page): bool {
+    return local_sitepages_parse_id_list($page->requiredroles ?? '') !== []
+        || local_sitepages_parse_id_list($page->requiredcohorts ?? '') !== [];
+}
+
+/**
+ * Role options for the page form (id => name).
+ *
+ * @return array<int,string>
+ */
+function local_sitepages_role_options(): array {
+    global $DB;
+    $options = role_get_names(context_system::instance(), ROLENAME_ALIAS, true);
+    // Skip guest — use Allow guests instead.
+    $guestid = (int) $DB->get_field('role', 'id', ['shortname' => 'guest']);
+    if ($guestid && isset($options[$guestid])) {
+        unset($options[$guestid]);
+    }
+    return $options;
+}
+
+/**
+ * Cohort options for the page form (id => name).
+ *
+ * @return array<int,string>
+ */
+function local_sitepages_cohort_options(): array {
+    global $DB, $CFG;
+    require_once($CFG->dirroot . '/cohort/lib.php');
+
+    $options = [];
+    $cohorts = $DB->get_records('cohort', null, 'name ASC', 'id, name, idnumber, visible');
+    foreach ($cohorts as $cohort) {
+        if (empty($cohort->visible) && !has_capability('moodle/cohort:view', context_system::instance())) {
+            continue;
+        }
+        $label = format_string($cohort->name);
+        if (!empty($cohort->idnumber)) {
+            $label .= ' (' . $cohort->idnumber . ')';
+        }
+        $options[(int) $cohort->id] = $label;
+    }
+    return $options;
+}
+
+/**
+ * Current user has at least one of the given roles (any context).
+ *
+ * @param int[] $roleids
+ * @return bool
+ */
+function local_sitepages_user_has_any_role(array $roleids): bool {
+    global $DB, $USER;
+    if ($roleids === []) {
+        return true;
+    }
+    if (empty($USER->id) || isguestuser()) {
+        return false;
+    }
+    list($insql, $params) = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED, 'r');
+    $params['userid'] = (int) $USER->id;
+    return $DB->record_exists_select('role_assignments', "userid = :userid AND roleid $insql", $params);
+}
+
+/**
+ * Current user is a member of at least one of the given cohorts.
+ *
+ * @param int[] $cohortids
+ * @return bool
+ */
+function local_sitepages_user_in_any_cohort(array $cohortids): bool {
+    global $CFG, $USER;
+    if ($cohortids === []) {
+        return true;
+    }
+    if (empty($USER->id) || isguestuser()) {
+        return false;
+    }
+    require_once($CFG->dirroot . '/cohort/lib.php');
+    foreach ($cohortids as $cohortid) {
+        if (cohort_is_member($cohortid, $USER->id)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * Can the current user view this page?
+ *
+ * Access model:
+ * - Managers (local/sitepages:manage) always can.
+ * - Hidden pages: managers only.
+ * - Guests: only when Allow guests is on and no role/cohort limits.
+ * - Logged-in users need local/sitepages:view, then any configured role AND cohort limits.
  *
  * @param stdClass $page
  * @param context|null $context
@@ -110,17 +257,35 @@ function local_sitepages_pretty_urls_enabled(): bool {
 function local_sitepages_can_view(stdClass $page, ?context $context = null): bool {
     $context = $context ?? context_system::instance();
 
-    if (!$page->visible && !has_capability('local/sitepages:manage', $context)) {
+    if (has_capability('local/sitepages:manage', $context)) {
+        return true;
+    }
+
+    if (empty($page->visible)) {
         return false;
     }
 
-    if (isloggedin() && !isguestuser()) {
-        return has_capability('local/sitepages:view', $context)
-            || has_capability('local/sitepages:manage', $context);
+    $roleids = local_sitepages_parse_id_list($page->requiredroles ?? '');
+    $cohortids = local_sitepages_parse_id_list($page->requiredcohorts ?? '');
+    $haslimits = $roleids !== [] || $cohortids !== [];
+
+    if (!isloggedin() || isguestuser()) {
+        // Audience limits require a real account.
+        return !$haslimits && !empty($page->allowguest);
     }
 
-    // Guests / logged-out.
-    return !empty($page->allowguest) && !empty($page->visible);
+    if (!has_capability('local/sitepages:view', $context)) {
+        return false;
+    }
+
+    if ($roleids !== [] && !local_sitepages_user_has_any_role($roleids)) {
+        return false;
+    }
+    if ($cohortids !== [] && !local_sitepages_user_in_any_cohort($cohortids)) {
+        return false;
+    }
+
+    return true;
 }
 
 /**

@@ -127,8 +127,9 @@ if (!$pages) {
         if ($islocked) {
             $actions[] = html_writer::span(get_string('homepagedeleteblocked', 'local_sitepages'), 'text-muted');
         } else {
+            $confirm = get_string('deleteconfirm', 'local_sitepages', format_string($page->name));
             $actions[] = html_writer::link($deleteurl, get_string('delete'), [
-                'onclick' => 'return confirm(' . json_encode(get_string('deleteconfirm', 'local_sitepages', format_string($page->name))) . ');',
+                'onclick' => 'return confirm(' . json_encode($confirm) . ');',
             ]);
         }
 

@@ -12,11 +12,22 @@ Create custom site pages outside courses (pretty URLs, homepage / My courses ove
 2. Visit **Site administration → Notifications**
 3. Manage pages: **Site administration → Pages → Manage site pages**
 
-Pages always work at `/local/sitepages/view.php?slug=your-slug`.
+Pages always work at `/local/sitepages/view.php?slug=your-slug` (no server rewrite required).
 
-### Optional: pretty URLs (`/your-slug`)
+## Optional: pretty URLs
 
-1. Configure web-server rewrite (Apache example in Moodle document root):
+Pretty links need **both**:
+
+1. A matching web-server rewrite
+2. **Pretty page URLs** enabled under Site pages settings
+
+Optional setting **Pretty URL prefix** (e.g. `sites`) changes generated links from `/welcome` to `/sites/welcome`. The rewrite rule must use the same prefix.
+
+Keep Pretty page URLs **off** until rewrite is verified — otherwise Moodle will generate short links that 404.
+
+### Root style (`/welcome`)
+
+**Apache** (Moodle document root `.htaccess`, after `RewriteEngine On`):
 
 ```apache
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -24,10 +35,58 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([A-Za-z0-9_-]+)/?$ local/sitepages/view.php?slug=$1 [QSA,L]
 ```
 
-Nginx: rewrite `/([A-Za-z0-9_-]+)/?` → `/local/sitepages/view.php?slug=$1` for requests that are not real files/directories (full examples in the admin guide / docs URL).
+**Nginx** (keep your existing Moodle PHP handling):
 
-2. Enable **Pretty page URLs (/slug)** under Site pages settings.
-3. Keep that setting off until rewrite is verified.
+```nginx
+location / {
+    try_files $uri $uri/ @moodle_sitepages;
+}
+location @moodle_sitepages {
+    rewrite ^/([A-Za-z0-9_-]+)/?$ /local/sitepages/view.php?slug=$1 last;
+}
+```
+
+Leave **Pretty URL prefix** empty.
+
+### Prefixed style (`/sites/welcome`) — recommended on busy sites
+
+Safer: avoids clashing with top-level Moodle paths (`admin`, `course`, `login`, `my`, …).
+
+Set **Pretty URL prefix** to `sites` (or another segment).
+
+**Apache:**
+
+```apache
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^sites/([A-Za-z0-9_-]+)/?$ local/sitepages/view.php?slug=$1 [QSA,L]
+```
+
+**Nginx:**
+
+```nginx
+location ^~ /sites/ {
+    rewrite ^/sites/([A-Za-z0-9_-]+)/?$ /local/sitepages/view.php?slug=$1 last;
+}
+```
+
+Notes:
+
+- Slugs: letters, numbers, hyphens only
+- After changing rewrite or prefix, purge Moodle caches and re-test both `/local/sitepages/view.php?slug=…` and the pretty URL
+
+## Access restrictions
+
+Per page (edit form → **Access restrictions**):
+
+| Control | Effect |
+|--------|--------|
+| **Visible** | Off → managers only |
+| **Allow guests** | Logged-out visitors may view (ignored if role/cohort limits are set) |
+| **Restrict to roles** | Viewer must have **at least one** of the selected roles (any context) |
+| **Restrict to cohorts** | Viewer must be in **at least one** of the selected cohorts |
+
+Role and cohort limits combine with **AND**. Users with **Manage site pages** always bypass limits. Site-wide deny/allow for logged-in users also uses capability `local/sitepages:view`.
 
 ## Optional: PageTiler
 

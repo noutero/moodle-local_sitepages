@@ -159,7 +159,7 @@ try {
 
     if (preg_match('#^/courses-preview#', $pathinfo) && $method === 'GET') {
         local_sitepages_api_json([
-            'courses' => \PageTiler\Catalog\MoodleCatalogHelper::getCourses([
+            'courses' => \PageTiler\Catalog\MoodleCatalogHelper::get_courses([
                 'filter' => optional_param('filter', 'all', PARAM_ALPHA),
                 'category_id' => optional_param('category_id', 0, PARAM_INT),
                 'count' => optional_param('count', 6, PARAM_INT),
@@ -172,7 +172,7 @@ try {
 
     if (preg_match('#^/my-courses-preview#', $pathinfo) && $method === 'GET') {
         local_sitepages_api_json([
-            'courses' => \PageTiler\Catalog\MoodleCatalogHelper::getMyCourses([
+            'courses' => \PageTiler\Catalog\MoodleCatalogHelper::get_my_courses([
                 'count' => optional_param('count', 6, PARAM_INT),
                 'summary_words' => optional_param('summary_words', 18, PARAM_INT),
             ]),
@@ -181,7 +181,7 @@ try {
 
     if (preg_match('#^/course-categories-preview#', $pathinfo) && $method === 'GET') {
         local_sitepages_api_json([
-            'categories' => \PageTiler\Catalog\MoodleCatalogHelper::getCategories([
+            'categories' => \PageTiler\Catalog\MoodleCatalogHelper::get_categories([
                 'parent_id' => optional_param('parent_id', 0, PARAM_INT),
                 'count' => optional_param('count', 0, PARAM_INT),
                 'hide_empty' => optional_param('hide_empty', 1, PARAM_INT),
@@ -191,7 +191,7 @@ try {
 
     if (preg_match('#^/featured-course-preview#', $pathinfo) && $method === 'GET') {
         local_sitepages_api_json([
-            'course' => \PageTiler\Catalog\MoodleCatalogHelper::getCourse(
+            'course' => \PageTiler\Catalog\MoodleCatalogHelper::get_course(
                 optional_param('course_id', 0, PARAM_INT),
                 optional_param('summary_words', 40, PARAM_INT)
             ),
@@ -200,7 +200,7 @@ try {
 
     if (preg_match('#^/events-preview#', $pathinfo) && $method === 'GET') {
         local_sitepages_api_json([
-            'events' => \PageTiler\Catalog\MoodleCatalogHelper::getEvents([
+            'events' => \PageTiler\Catalog\MoodleCatalogHelper::get_events([
                 'count' => optional_param('count', 5, PARAM_INT),
                 'days' => optional_param('days', 30, PARAM_INT),
                 'course_filter' => optional_param('course_filter', 'all', PARAM_ALPHA),
@@ -211,7 +211,7 @@ try {
 
     if (preg_match('#^/announcements-preview#', $pathinfo) && $method === 'GET') {
         local_sitepages_api_json([
-            'announcements' => \PageTiler\Catalog\MoodleCatalogHelper::getAnnouncements([
+            'announcements' => \PageTiler\Catalog\MoodleCatalogHelper::get_announcements([
                 'source' => optional_param('source', 'site', PARAM_ALPHA),
                 'course_id' => optional_param('course_id', 0, PARAM_INT),
                 'count' => optional_param('count', 5, PARAM_INT),
@@ -222,7 +222,7 @@ try {
 
     if (preg_match('#^/badges-preview#', $pathinfo) && $method === 'GET') {
         local_sitepages_api_json([
-            'badges' => \PageTiler\Catalog\MoodleCatalogHelper::getBadges([
+            'badges' => \PageTiler\Catalog\MoodleCatalogHelper::get_badges([
                 'scope' => optional_param('scope', 'site', PARAM_ALPHA),
                 'course_id' => optional_param('course_id', 0, PARAM_INT),
                 'count' => optional_param('count', 8, PARAM_INT),
