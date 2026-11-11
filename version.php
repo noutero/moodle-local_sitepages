@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_sitepages';
-$plugin->version   = 2026111101;
+$plugin->version   = 2026111102;
 $plugin->requires  = 2024100100; // Moodle 4.5.
 $plugin->maturity  = MATURITY_BETA;
 $plugin->release   = '0.2.0';

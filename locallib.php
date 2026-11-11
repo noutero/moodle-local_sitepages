@@ -213,7 +213,7 @@ function local_sitepages_user_has_any_role(array $roleids): bool {
     if (empty($USER->id) || isguestuser()) {
         return false;
     }
-    list($insql, $params) = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED, 'r');
+    [$insql, $params] = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED, 'r');
     $params['userid'] = (int) $USER->id;
     return $DB->record_exists_select('role_assignments', "userid = :userid AND roleid $insql", $params);
 }
