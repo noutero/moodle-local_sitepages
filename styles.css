@@ -1,19 +1,73 @@
 /**
- * Site pages layout overrides (Boost drawers).
+ * Site pages layout overrides (Boost / Moove drawers).
  *
- * .pagelayout-standard always caps .main-inner — full width needs an explicit override.
+ * Themes cap .main-inner (Boost limited width, Moove 85%/95% + side padding).
+ * Full-width PageTiler pages need the canvas edge-to-edge so section padding
+ * is the only horizontal inset — especially on mobile.
  */
 
-@media (min-width: 768px) {
-    body.pagelayout-standard.local-sitepages-fullwidth #page.drawers .main-inner,
-    body.pagelayout-standard.local-sitepages-fullwidth #page.drawers .footer-popover,
-    body.pagelayout-frontpage.local-sitepages-fullwidth #page.drawers .main-inner,
-    body.pagelayout-frontpage.local-sitepages-fullwidth #page.drawers .footer-popover {
-        max-width: none;
-    }
+body.pagelayout-standard.local-sitepages-fullwidth #page.drawers,
+body.pagelayout-frontpage.local-sitepages-fullwidth #page.drawers,
+body.local-sitepages-homepage.local-sitepages-fullwidth #page.drawers,
+body.local-sitepages-mycourses.local-sitepages-fullwidth #page.drawers {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+body.pagelayout-standard.local-sitepages-fullwidth #page.drawers .main-inner,
+body.pagelayout-standard.local-sitepages-fullwidth #page.drawers #topofscroll,
+body.pagelayout-standard.local-sitepages-fullwidth #page.drawers .footer-popover,
+body.pagelayout-frontpage.local-sitepages-fullwidth #page.drawers .main-inner,
+body.pagelayout-frontpage.local-sitepages-fullwidth #page.drawers #topofscroll,
+body.pagelayout-frontpage.local-sitepages-fullwidth #page.drawers .footer-popover,
+body.local-sitepages-homepage.local-sitepages-fullwidth #page.drawers .main-inner,
+body.local-sitepages-homepage.local-sitepages-fullwidth #page.drawers #topofscroll,
+body.local-sitepages-mycourses.local-sitepages-fullwidth #page.drawers .main-inner,
+body.local-sitepages-mycourses.local-sitepages-fullwidth #page.drawers #topofscroll {
+    max-width: none !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Moove keeps vertical card padding on .main-inner; drop it so sections control rhythm. */
+body.theme.local-sitepages-fullwidth #page.drawers .main-inner,
+body.theme_moove.local-sitepages-fullwidth #page.drawers .main-inner,
+body.local-sitepages-fullwidth.path-site #page.drawers .main-inner {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 body.local-sitepages-hideheader #page-header,
 body.local-sitepages-hideheader .page-header-headings {
     display: none;
+}
+
+/* Role badges on Manage site pages (avoid Moove’s loud bg-info cyan). */
+.local-sitepages-badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    vertical-align: middle;
+    padding: 0.35em 0.7em;
+    border: 1px solid transparent;
+}
+.local-sitepages-badge--home {
+    background-color: #0f172a;
+    color: #fff;
+}
+.local-sitepages-badge--home-alt {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+.local-sitepages-badge--mycourses {
+    background-color: #1d4ed8;
+    color: #fff;
+    border-color: #1d4ed8;
 }

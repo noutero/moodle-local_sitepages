@@ -78,30 +78,9 @@ $config = [
         'accept' => '.jpg,.jpeg,.png,.gif,.webp,image/jpeg,image/png,image/gif,image/webp',
         'allowExternalUrl' => true,
     ],
-    'i18n' => [
-        'hideSave' => true,
-        'save' => 'Save',
-        'publish' => 'Save',
-        'exit' => 'Exit',
+    'i18n' => array_merge(pagetiler_builder_i18n($maxbytes), [
         'view' => get_string('viewpage', 'local_sitepages'),
-        'undo' => 'Undo',
-        'redo' => 'Redo',
-        'addSection' => 'Add Section',
-        'widgets' => 'Widgets',
-        'settings' => 'Settings',
-        'saving' => 'Saving…',
-        'saved' => 'Saved',
-        'error' => 'Something went wrong.',
-        'mediaUpload' => get_string('mediaupload', 'pagetiler'),
-        'mediaUploadHelp' => get_string('mediauploadhelp', 'pagetiler', display_size($maxbytes)),
-        'mediaOrUrl' => get_string('mediaorurl', 'pagetiler'),
-        'mediaPick' => get_string('mediapick', 'pagetiler'),
-        'mediaCancel' => get_string('mediacancel', 'pagetiler'),
-        'mediaUploading' => get_string('mediauploading', 'pagetiler'),
-        'mediaUploadFailed' => get_string('mediauploadfailed', 'pagetiler'),
-        'mediaInvalidType' => get_string('mediainvalidtype', 'pagetiler'),
-        'mediaFileSize' => get_string('mediafilesize', 'pagetiler'),
-    ],
+    ]),
 ];
 
 $buildercss = pagetiler_asset_url('builder.css')->out(false);

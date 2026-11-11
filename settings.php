@@ -61,6 +61,13 @@ if ($hassiteconfig) {
     ));
 
     $homesettings->add(new admin_setting_configcheckbox(
+        'local_sitepages/useprettyurls',
+        get_string('useprettyurls', 'local_sitepages'),
+        get_string('useprettyurls_help', 'local_sitepages'),
+        0
+    ));
+
+    $homesettings->add(new admin_setting_configcheckbox(
         'local_sitepages/useonhomepage',
         get_string('useonhomepage', 'local_sitepages'),
         get_string('useonhomepage_help', 'local_sitepages'),

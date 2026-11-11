@@ -75,16 +75,29 @@ function local_sitepages_get_page(int $id = 0, string $slug = '') {
 }
 
 /**
- * Public URL for a site page (pretty /slug when set, otherwise view.php?id=).
+ * Public URL for a site page.
+ *
+ * Uses /local/sitepages/view.php?slug=… when a slug is set (works without
+ * web-server rewrite). Pretty /{slug} URLs are optional via useprettyurls.
  *
  * @param stdClass $page
  * @return moodle_url
  */
 function local_sitepages_page_url(stdClass $page): moodle_url {
-    if (!empty($page->slug)) {
+    if (!empty($page->slug) && local_sitepages_pretty_urls_enabled()) {
         return new moodle_url('/' . $page->slug);
     }
+    if (!empty($page->slug)) {
+        return new moodle_url('/local/sitepages/view.php', ['slug' => $page->slug]);
+    }
     return new moodle_url('/local/sitepages/view.php', ['id' => $page->id]);
+}
+
+/**
+ * Whether pretty /{slug} URLs are enabled (requires web-server rewrite).
+ */
+function local_sitepages_pretty_urls_enabled(): bool {
+    return (bool) get_config('local_sitepages', 'useprettyurls');
 }
 
 /**

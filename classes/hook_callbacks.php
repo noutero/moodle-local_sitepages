@@ -84,6 +84,37 @@ class hook_callbacks {
             new \pix_icon('icon', get_string('pages', 'local_sitepages'), 'local_sitepages')
         );
 
+        // Child links for visible pages (guests see allowguest pages only).
+        if ($canmanage) {
+            $pages = $DB->get_records('local_sitepages', null, 'name ASC');
+        } else if ($canview) {
+            $pages = $DB->get_records('local_sitepages', ['visible' => 1], 'name ASC');
+        } else {
+            $pages = $DB->get_records_select(
+                'local_sitepages',
+                'visible = 1 AND allowguest = 1',
+                null,
+                'name ASC'
+            );
+        }
+        foreach ($pages as $page) {
+            // Skip homepage / My courses targets and legacy welcome slug — already in primary/custom menu.
+            if (local_sitepages_is_homepage_page($page) || local_sitepages_is_mycourses_page($page)) {
+                continue;
+            }
+            $slug = (string) ($page->slug ?? '');
+            if (in_array($slug, ['welcome', 'home'], true)) {
+                continue;
+            }
+            $node->add(
+                format_string($page->name),
+                local_sitepages_page_url($page),
+                \navigation_node::TYPE_CUSTOM,
+                null,
+                'sitepage-' . $page->id
+            );
+        }
+
         // Place after My courses: before Site administration when present.
         $beforekey = null;
         $keys = $primary->get_children_key_list();

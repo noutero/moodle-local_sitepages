@@ -139,20 +139,20 @@ if (!$pages) {
         $namecell = format_string($page->name);
         if ($isguesthome && $isloggedinhome) {
             $namecell .= ' ' . html_writer::tag('span', get_string('homepagebadge', 'local_sitepages'), [
-                'class' => 'badge bg-primary text-white',
+                'class' => 'badge rounded-pill local-sitepages-badge local-sitepages-badge--home',
             ]);
         } else if ($isguesthome) {
             $namecell .= ' ' . html_writer::tag('span', get_string('homepagebadge_guest', 'local_sitepages'), [
-                'class' => 'badge bg-primary text-white',
+                'class' => 'badge rounded-pill local-sitepages-badge local-sitepages-badge--home',
             ]);
         } else if ($isloggedinhome) {
             $namecell .= ' ' . html_writer::tag('span', get_string('homepagebadge_loggedin', 'local_sitepages'), [
-                'class' => 'badge bg-secondary text-dark',
+                'class' => 'badge rounded-pill local-sitepages-badge local-sitepages-badge--home-alt',
             ]);
         }
         if ($ismycourses) {
             $namecell .= ' ' . html_writer::tag('span', get_string('mycoursesbadge', 'local_sitepages'), [
-                'class' => 'badge bg-info text-dark',
+                'class' => 'badge rounded-pill local-sitepages-badge local-sitepages-badge--mycourses',
             ]);
         }
 

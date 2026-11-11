@@ -38,8 +38,12 @@ if (!$page) {
     throw new moodle_exception('pagenotfound', 'local_sitepages');
 }
 
-// Canonical pretty URL when rewrite is available (skip under Behat — no rewrite).
-if (!empty($page->slug) && !(defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING)) {
+// Canonical pretty URL only when rewrite is enabled (skip under Behat).
+if (
+    !empty($page->slug)
+    && local_sitepages_pretty_urls_enabled()
+    && !(defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING)
+) {
     $reqpath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '';
     if (strpos($reqpath, '/local/sitepages/view.php') !== false) {
         redirect(local_sitepages_page_url($page));

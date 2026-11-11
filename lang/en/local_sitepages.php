@@ -89,7 +89,9 @@ $string['sitehomepage_desc'] = 'Replace the default Moodle site home with Site p
 $string['sitepages:manage'] = 'Manage site pages';
 $string['sitepages:view'] = 'View site pages';
 $string['slug'] = 'URL slug';
-$string['slug_help'] = 'Optional short URL name (letters, numbers, hyphens). With slug "welcome" the page is available at /welcome. Leave blank to use /local/sitepages/view.php?id=… only.';
+$string['slug_help'] = 'Optional short URL name (letters, numbers, hyphens). Pages are available at /local/sitepages/view.php?slug=name. With “Pretty URLs” enabled (and web-server rewrite), they are also available at /name.';
+$string['useprettyurls'] = 'Pretty page URLs (/slug)';
+$string['useprettyurls_help'] = 'When enabled, site pages with a slug use /slug instead of /local/sitepages/view.php?slug=…. Requires a web-server rewrite that maps /slug to local/sitepages/view.php (Apache/Nginx examples are in the admin guide). Leave off unless rewrite is configured.';
 $string['useonhomepage'] = 'Use a site page on the homepage';
 $string['useonhomepage_help'] = 'When enabled, Moodle’s site home (/) shows the selected Site page(s) instead of the classic frontpage. The guest page is made guest-visible automatically. Turn off to restore the classic Moodle homepage.';
 $string['useonmycourses'] = 'Use a site page for My courses';
