@@ -107,6 +107,5 @@ Admin guide: https://pagetiler.ivent.pl/local/sitepages/view.php?slug=docs (demo
 
 ## Support / source
 
-- **Public issue tracker** (Marketplace / anonymous): https://github.com/noutero/moodle-local-sitepages-tracker/issues
-- Private source (this repo): https://github.com/noutero/moodle-local_sitepages
+- **Source + issue tracker** (public): https://github.com/noutero/moodle-local_sitepages/issues
 - PageTiler tracker (separate): https://github.com/noutero/pagetiler-moodle-tracker/issues
